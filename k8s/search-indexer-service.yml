@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: search-indexer-service-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: search-indexer-service
+  template:
+    metadata:
+      labels:
+        app: search-indexer-service
+    spec:
+      containers:
+        - name: search-indexer-service
+          image: search-indexer-service:latest
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: app-configmap

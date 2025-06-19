@@ -1,0 +1,118 @@
+version: '3.8'
+
+services:
+  product-service:
+    build:
+      context: ./product-service
+      dockerfile: Dockerfile
+    container_name: erli-product-service
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/erli-products
+      - RABBITMQ_URI=amqp://rabbitmq
+      - REDIS_URI=redis://redis:6379
+      - ELASTICSEARCH_URI=http://elasticsearch:9200
+    depends_on:
+      mongo:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+  notification-service:
+    build:
+      context: ./notification-service
+      dockerfile: Dockerfile
+    # container_name: erli-notification-service
+    environment:
+      - RABBITMQ_URI=amqp://rabbitmq
+      - REDIS_URI=redis://redis:6379
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+  search-indexer-service:
+    build:
+      context: ./search-indexer-service
+      dockerfile: Dockerfile
+    container_name: erli-search-indexer-service
+    environment:
+      - RABBITMQ_URI=amqp://rabbitmq
+      - ELASTICSEARCH_URI=http://elasticsearch:9200
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+  mongo:
+    image: mongo:latest
+    container_name: erli-mongo-db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: erli-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_running", "-q"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  redis:
+    image: redis:7-alpine
+    container_name: erli-redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.3
+    container_name: erli-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false # Important: for dev purpose
+    ports:
+      - "9200:9200"
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9200/_cluster/health?wait_for_status=yellow&timeout=5s"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.8.2
+    container_name: erli-kibana
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_HOSTS=["http://elasticsearch:9200"]
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5601/api/status"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+volumes:
+  mongo-data:
+  elasticsearch-data:

@@ -1,0 +1,10 @@
+# k8s/app-configmap.yml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-configmap
+data:
+  MONGO_URI: "mongodb://mongo-service:27017/erli-products"
+  RABBITMQ_URI: "amqp://rabbitmq-service:5672"
+  REDIS_URI: "redis://redis-service:6379"
+  ELASTICSEARCH_URI: "http://elasticsearch-service:9200"

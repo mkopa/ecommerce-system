@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  product-service:
+    build:
+      context: ./product-service
+      dockerfile: Dockerfile.dev
+    container_name: erli-product-service-dev
+    volumes:
+      - ./product-service:/usr/src/app
+    command: npm run dev
+  notification-service:
+    build:
+      context: ./notification-service
+      dockerfile: Dockerfile.dev
+    # container_name: erli-notification-service-dev
+    volumes:
+      - ./notification-service:/usr/src/app
+    command: npm run dev
+  search-indexer-service:
+    build:
+      context: ./search-indexer-service
+      dockerfile: Dockerfile.dev
+    container_name: erli-search-indexer-service-dev
+    volumes:
+      - ./search-indexer-service:/usr/src/app
+    command: npm run dev
