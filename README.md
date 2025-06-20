@@ -46,6 +46,23 @@ The system is designed with a decoupled, event-driven architecture. Services com
 - **Orchestration:** Kubernetes (using Minikube for local cluster)
 - **DevOps & Tooling:** `kubectl`, Kibana
 
+## Quality & Tooling
+
+The repository is configured with ESLint for static analysis and Prettier for deterministic code formatting.
+
+ - **ESLint:** Enforces strict, type-aware rules to prevent bugs.
+ - **Prettier:** Handles all code styling rules.
+ - **Automation:** Git hooks are configured to enforce standards on every commit.
+
+### Available Scripts
+
+Run these from the root directory:
+
+- `npm run lint`: Run static analysis on all `.ts` files.
+- `npm run lint:fix`: Attempt to auto-fix linting errors.
+- `npm run format`: Check for formatting violations.
+- `npm run format:fix`: Auto-format all relevant files.
+
 ## Prerequisites
 
 Before you begin, ensure you have the following tools installed on your Debian-based Linux system (e.g., Ubuntu, Mint).
