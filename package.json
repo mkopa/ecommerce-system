@@ -1,0 +1,25 @@
+{
+  "name": "ecommerce-system",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Root for the e-commerce monorepo",
+  "scripts": {
+    "lint": "eslint . --ext .ts --max-warnings 0 --cache --cache-location .eslintcache",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "format": "prettier --check \"**/*.{ts,js,json,yml}\"",
+    "format:fix": "prettier --write \"**/*.{ts,js,json,yml}\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.13.1",
+    "@typescript-eslint/parser": "^7.13.1",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-import-resolver-typescript": "^3.6.1",
+    "eslint-plugin-import": "^2.29.1",
+    "prettier": "^3.3.2",
+    "typescript": "^5.8.3"
+  }
+}

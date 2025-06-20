@@ -1,8 +1,9 @@
 // product-service/src/rabbitmq.ts
+// eslint-disable-next-line
 import amqp from 'amqplib';
 
 let channel: amqp.Channel;
-const PRODUCT_EVENTS_EXCHANGE = 'product_events'; 
+const PRODUCT_EVENTS_EXCHANGE = 'product_events';
 
 export async function connectRabbitMQ() {
   try {

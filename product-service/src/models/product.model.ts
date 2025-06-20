@@ -14,7 +14,7 @@ const ProductSchema: Schema = new Schema({
   description: { type: String, required: false },
   price: { type: Number, required: true },
   sku: { type: String, required: true, unique: true },
-  createdAt: { type: Date, default: Date.now }
+  createdAt: { type: Date, default: Date.now },
 });
 
 export default mongoose.model<IProduct>('Product', ProductSchema);

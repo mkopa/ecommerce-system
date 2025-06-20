@@ -1,9 +1,10 @@
 // src/index.ts
 import express from 'express';
 import mongoose from 'mongoose';
-import productRouter from './routes/product.routes'; // Import our router
+
 import { connectRabbitMQ } from './rabbitmq';
 import { connectRedis } from './redis';
+import productRouter from './routes/product.routes'; // Import our router
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -27,7 +28,7 @@ const startServer = async () => {
   await connectDB();
   await connectRabbitMQ();
   await connectRedis();
-  
+
   // Middleware to parse request body as JSON
   app.use(express.json());
 
@@ -35,7 +36,7 @@ const startServer = async () => {
   app.get('/', (req, res) => {
     res.json({
       message: 'Welcome to the product-service for Erli!',
-      databaseStatus: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected'
+      databaseStatus: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
     });
   });
 
