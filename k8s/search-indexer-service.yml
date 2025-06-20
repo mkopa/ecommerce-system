@@ -19,3 +19,10 @@ spec:
           envFrom:
             - configMapRef:
                 name: app-configmap
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "384Mi"
+              cpu: "300m"

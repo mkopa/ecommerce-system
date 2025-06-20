@@ -37,3 +37,10 @@ spec:
               value: "false"
             - name: "ES_JAVA_OPTS"
               value: "-Xms1g -Xmx1g"
+          resources:
+            requests:
+              memory: "1.5Gi"
+              cpu: "500m"
+            limits:
+              memory: "2Gi"
+              cpu: "1000m" # 1 CPU core

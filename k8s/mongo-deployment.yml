@@ -5,6 +5,9 @@ metadata:
   name: mongo-deployment
 spec:
   replicas: 1
+  # Ta sekcja jest kluczowa dla rozwiązania problemu
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: mongo
@@ -21,6 +24,13 @@ spec:
           volumeMounts:
             - name: mongo-storage
               mountPath: /data/db
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "200m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
       volumes:
         - name: mongo-storage
           persistentVolumeClaim:
