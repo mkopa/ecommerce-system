@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 
 import { connectRabbitMQ } from './rabbitmq';
 import { connectRedis } from './redis';
-import productRouter from './routes/product.routes'; // Import our router
+import productRouter from './routes/product.routes';
 
 const app = express();
 const port = process.env.PORT || 3000;
